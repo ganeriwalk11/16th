@@ -1,17 +1,17 @@
 [
   {
-    "a": {"value":"1","color":"","fx":"","dep":{},"url":""},
-    "b": {"value":"2","color":"","fx":"","dep":{},"url":""},
-    "c": {"value":"Loading...","color":"black","fx":"","dep":{},"url":"http://api.openweathermap.org/data/2.5/forecast/mumbai?id=524901&APPID=e0d5c571eb39e0ba37f4f6c212fd439d"}
+    "a": {"value":"1","color":"","fx":"","dep":[],"url":""},
+    "b": {"value":"2","color":"","fx":"","dep":[],"url":""},
+    "c": {"value":"Loading...","color":"black","fx":"","dep":[],"url":"http://api.openweathermap.org/data/2.5/forecast/mumbai?id=524901&APPID=e0d5c571eb39e0ba37f4f6c212fd439d"}
   },
   {
-    "a": {"value":"3","color":"","fx":"","dep":{},"url":""},
-    "b": {"value":"4","color":"","fx":"","dep":{},"url":""},
-    "c": {"value":"Loading...","color":"black","fx":"","dep":{},"url":"http://api.openweathermap.org/data/2.5/forecast/mumbai?id=524901&APPID=e0d5c571eb39e0ba37f4f6c212fd439d"}
+    "a": {"value":"3","color":"","fx":"","dep":[],"url":""},
+    "b": {"value":"4","color":"","fx":"","dep":[],"url":""},
+    "c": {"value":"Loading...","color":"black","fx":"","dep":[],"url":"http://api.openweathermap.org/data/2.5/forecast/mumbai?id=524901&APPID=e0d5c571eb39e0ba37f4f6c212fd439d"}
   },
   {
-    "a": {"value":"5","color":"","fx":"","dep":{},"url":""},
-    "b": {"value":"6","color":"","fx":"","dep":{},"url":""},
-    "c": {"value":"Loading...","color":"black","fx":"","dep":{},"url":"http://api.openweathermap.org/data/2.5/forecast/mumbai?id=524901&APPID=e0d5c571eb39e0ba37f4f6c212fd439d"}
+    "a": {"value":"5","color":"","fx":"","dep":[],"url":""},
+    "b": {"value":"6","color":"","fx":"","dep":[],"url":""},
+    "c": {"value":"Loading...","color":"black","fx":"","dep":[],"url":"http://api.openweathermap.org/data/2.5/forecast/mumbai?id=524901&APPID=e0d5c571eb39e0ba37f4f6c212fd439d"}
   }
 ]
