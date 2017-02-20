@@ -38,23 +38,44 @@ export default function(state = [], action)
       var head = Object.keys(action.payload[0]);
       var len = head.length;
       var data = [...state];
-      var q= [];
-      var w = [];
-      for(var i=0;i<len;i++)
-      {
-        console.log(data,i);
-        q.push(data[i]['c']['url']);
-      }   
-      var j=0;
-      Observable.from(q)
-        .concatMap(function(row)
-        { 
-          return rxFetch(row).json();
-        })
-        .subscribe(response =>
+      var q;
+      var w ;
+      Observable.from(data)
+        .concatMap(function(row,i)
         {
-          data[j++]['c']['value'] = (response['cod']);
+          var x,y;
+          head.map(function(h,j){
+            if(row[h]['url'])
+            {
+              console.log(row[h]['url']);
+              x = rxFetch(row[h]['url']).json();
+              w = h;
+              q=i;
+              //return rxFetch(row[h]['url']).json();
+            }
+          });
+          return x;
+        })
+        .subscribe(function(response)
+        {
+          console.log(response,w,q);
+          data[q][w]['value'] = response['cod'];
         });
+
+      // for(var i=0;i<len;i++)
+      // {
+      //   q.push(data[i]['c']['url']);
+      // }   
+      // var j=0;
+      // Observable.from(q)
+      //   .concatMap(function(row)
+      //   { 
+      //     return rxFetch(row).json();
+      //   })
+      //   .subscribe(response =>
+      //   {
+      //     data[j++]['c']['value'] = (response['cod']);
+      //   });
        return data;
         break;
     }
@@ -118,8 +139,8 @@ export default function(state = [], action)
         var header = action.payload.header;
         var a = action.payload.a;
         var data = [...state];
-        data[op1i][head[op1j]]["dep"] = header + i;
-        data[op2i][head[op2j]]["dep"] = header + i;
+        data[op1i][head[op1j]]["dep"].push(header + (i+1));
+        data[op2i][head[op2j]]["dep"].push(header + (i+1));
         data[i][header]["fx"] = a;
         data[i][header]["color"]  = color;
         data[i][header]['value'] = ans;
