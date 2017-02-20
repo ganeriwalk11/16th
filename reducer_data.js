@@ -2,6 +2,7 @@ import Rx from 'rxjs';
 import { ajax } from 'rxjs/observable/dom/ajax';
 import { Observable } from 'rxjs/Observable';
 
+import { POST_DATA } from '../actions/index';
 import { FETCH_DATA } from '../actions/index';
 import { FETCH_FUL } from '../actions/index';
 import { FETCH_FULL } from '../actions/index';
@@ -47,35 +48,17 @@ export default function(state = [], action)
           head.map(function(h,j){
             if(row[h]['url'])
             {
-              console.log(row[h]['url']);
               x = rxFetch(row[h]['url']).json();
               w = h;
               q=i;
-              //return rxFetch(row[h]['url']).json();
             }
           });
           return x;
         })
         .subscribe(function(response)
         {
-          console.log(response,w,q);
-          data[q][w]['value'] = response['cod'];
+          data[q][w]['value'] = response['a'];
         });
-
-      // for(var i=0;i<len;i++)
-      // {
-      //   q.push(data[i]['c']['url']);
-      // }   
-      // var j=0;
-      // Observable.from(q)
-      //   .concatMap(function(row)
-      //   { 
-      //     return rxFetch(row).json();
-      //   })
-      //   .subscribe(response =>
-      //   {
-      //     data[j++]['c']['value'] = (response['cod']);
-      //   });
        return data;
         break;
     }
@@ -105,7 +88,7 @@ export default function(state = [], action)
       }
 
        case CHECK_INTEGER:
-       {
+       { 
          var data = [...state];
          var i = action.payload.i;
          var q = action.payload.h;
@@ -124,6 +107,11 @@ export default function(state = [], action)
         data[i][h]['value'] = action.payload.target;
         return (data);
         break;
+      }
+
+      case POST_DATA:
+      {
+        return state;
       }
 
       case APPLY_FUN:
