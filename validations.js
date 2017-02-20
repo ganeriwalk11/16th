@@ -20,15 +20,16 @@ export function applyF (fx,l){
   };
 }
 
-export function inputEdit(value) {
+export function inputEdit(value)
+{
   return {
     type: fx_bar,
     payload: value 
   };
 }
 
-export function fbar(value) {
-  console.log(value);
+export function fbar(value)
+{
   return {
     type: f_bar,
     payload: value 
