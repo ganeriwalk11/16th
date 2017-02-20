@@ -1,7 +1,9 @@
 import Rx from 'rxjs';
 import 'rxjs/add/observable/dom/ajax';
 import { Observable } from 'rxjs/Observable';
+import axios from 'axios';
 
+export const POST_DATA = 'POST_DATA';
 export const FETCH_DATA = 'FETCH_DATA';
 export const FETCH_FUL = 'FETCH_USER_FULFILLED';
 export const FETCH_FULL = 'FETCH_USER_F';
@@ -12,7 +14,7 @@ export const APPLY_FUN = 'APPLY_FUN';
 export const S_COLOR = 'S_COLOR';
 
 const url = 'src/jsonData/mainData.json';
-
+const urla = 'http://localhost:5000';
 export const fetchUserEpic = action$ =>
   action$.ofType(FETCH_DATA)
     .mergeMap(action =>
@@ -42,14 +44,10 @@ export function fetchUrlData(data) {
 
  
 export function postData(data) {
- // console.log(data);
-  //const url = 'src/jsonData/mainData.json';
-  const request = axios.post(url,data);
-  return ;
-  //    return {
-  //   type: FETCH_DATA,
-  //   payload: request
-  // }
+  const request = axios.post(urla,data);
+     return {
+    type: POST_DATA
+  }
 };
 
 export function addData(dupdata) {
