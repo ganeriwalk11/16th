@@ -19,24 +19,25 @@ class SpreadSheet extends Component
         this.props.fetchData();
     }
 
-    refCallback(item)
-    {
-        if (item)
-        {  
-            var a = ReactDOM.findDOMNode(item);
-            var stream$ = Observable.fromEvent(a,'click');
-            stream$.subscribe((e) => 
-            {
-                this.props.fetchData();
-            });
-        }
-    }
+    // refCallback(item)
+    // {
+    //     if (item)
+    //     {  
+    //         console.log("here");
+    //         var a = ReactDOM.findDOMNode(item);
+    //         var stream$ = Observable.fromEvent(a,'click');
+    //         stream$.subscribe((e) => 
+    //         {
+    //             this.props.fetchData();
+    //         });
+    //     }
+    // }
 
     render() 
     {
         return(
             <div>
-                <button ref={this.refCallback.bind(this)}>Fetch Data</button>
+               
             </div>
         );
     }
