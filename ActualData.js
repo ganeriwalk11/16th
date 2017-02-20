@@ -24,11 +24,12 @@ class ActualData extends Component
     {
         super(props);
         this.x = [];
+        this.fb={};
     }
 
     componentDidMount()
     {
-      // setInterval(() => {this.props.fetchUrlData(this.props.data)},500);    
+      //setInterval(() => {this.props.fetchUrlData(this.props.data)},800);    
     }
 
     checkFocus(event)
@@ -36,14 +37,17 @@ class ActualData extends Component
         this.x.push(event.target.innerText);
     }
 
-    checkBlur(h,i,j,event)
+    checkBlur(h,i,j,q,event)
     {
-        console.log("here",this.x,event.target.innerText);
         var dupdata = this.props.data;
         var me = this;
         var head = Object.keys(dupdata[0]);
         let alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-        var target = event.target.innerText;
+        var target;
+        if(q !== "")
+            target = q;
+        else
+            target = event.target.innerText;
        // Observable.of(target).if(() => target == parseInt(target,10), console.log("Number"),console.log("NO"));
         if(dupdata[i][head[j]]["value"] != target)
         {
@@ -51,6 +55,7 @@ class ActualData extends Component
             {
                 if(target == parseInt(target,10))
                 {
+                    //console.log("int",i,h,target);
                     this.props.checkIntegerAction(i,h,target);
                     if(dupdata[i][head[j]]["dep"].length)
                     {
@@ -64,7 +69,6 @@ class ActualData extends Component
                             var p = parseInt(depf[1],10) - 1;
                             var t = depf[0];
                             var f = dupdata[p][t]["fx"];
-                            console.log("p,t,f",p,t,f);
                             me.props.applyF(t,f,p,dupdata, "blue");
                         }); 
                         
@@ -73,10 +77,14 @@ class ActualData extends Component
                 else
                 {
                     if(target[0] == '=' && alpha.indexOf(target[2])>-1 && alpha.indexOf(target[5])>-1 && target[1] == '(' && target[target.length -1]  == ')')
-                    {
+                    {;
                         var op1i = target[3] - 1;
                         var op2i = target[6] - 1;
                         var op1j = alpha.indexOf(target[2]);
+                        // for(var z = 5;z<(target.length-2);z++)
+                        // {
+                        //     op2j = op2j+target[z];
+                        // }
                         var op2j = alpha.indexOf(target[5]);
                         var operator = target[4];
                         if( !(dupdata[op1i]) || !(dupdata[op2i]))
@@ -94,112 +102,52 @@ class ActualData extends Component
                     }
                 }   
             } 
-        }  
+        } 
     }
     
     handleDoubleClick(event)
-    {
-        var a = event.target;
-            var fxBar = this.refs.theInput;
-            var rowno = Number(a.className[1]);
-            var header = (a.className[0].toLowerCase());
-            var head = Object.keys(this.props.data[0]);
-            var data = "";
-            var stream$ = Observable.fromEvent(a,'dblclick');
-            stream$.subscribe((e) => {    
+    { 
+            let a = event.target;
+            let fxBar = document.getElementById("fbar");
+            let rowno = Number(a.className[1]);
+            let header = (a.className[0].toLowerCase());
+            let head = Object.keys(this.props.data[0]);
+            let data;
+            var he;
+            let stream$ = Observable.fromEvent(a,'dblclick');
+            stream$.subscribe((e) => { 
+                fxBar.className= a.id;  
                 if(this.props.data[rowno -1][header]["fx"])
-                { 
+                {
                     data = this.props.data[rowno -1][header]["fx"];
                 }
                 else
-                {  
+                {   
                     data = this.props.data[rowno -1][header]["value"];
                 }
                 this.props.inputEdit(data,a.className);
+                fxBar.focus(); 
             });
             var stream1$ = Observable.fromEvent(fxBar,'keyup')
-                                    .debounceTime(750)
-                                    .distinctUntilChanged();
-            stream1$.subscribe((e) => {
-                if(this.props.data[rowno -1][header]["fx"])
-                {
-                    a.innerText = e.target.innerText;
-                    this.props.data[rowno -1][header]["fx"] = e.target.innerText;
-                    //this.checkedBlur.bind(this,header,(rowno - 1),head.indexOf(header),a.innerText);
-                }
-                else
-                {
-                    this.checkedBlur.bind(this,header,(rowno - 1),head.indexOf(header),a.innerText);
-                    a.innerText = e.target.innerText;
-                    //this.props.data[rowno -1][header]["value"] = e.target.innerText;
-                }
-            });
+                           .map(function(e){return e.target;})
+            stream1$.subscribe((elem) => {
+                var p = document.getElementById(elem.className);
+                    p.innerText = elem.innerText;
+                    this.fb.he = {h:header};
+                    this.fb.row = rowno - 1;
+                    this.fb.head = head.indexOf(header);
+            });          
         }
 
-    checkedBlur(h,i,j,target)
-    {
-        console.log("there");
-        var dupdata = this.props.data;
-        var me = this;
-        var head = Object.keys(dupdata[0]);
-        let alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-        //var target = event.target.innerText;
-       // Observable.of(target).if(() => target == parseInt(target,10), console.log("Number"),console.log("NO"));
-        if(dupdata[i][head[j]]["value"] != target)
-        {
-            if( this.x[this.x.length - 1] != target)
-            {
-                if(target == parseInt(target,10))
-                {
-                    this.props.checkIntegerAction(i,h,target);
-                    if(dupdata[i][head[j]]["dep"].length)
-                    {
-                        var depformula = [];
-                        var deep = []; 
-                        depformula = dupdata[i][head[j]]["dep"];
-                        depformula.map(function(r){
-                            deep.push(r);
-                        })
-                        deep.map(function(depf){
-                            var p = parseInt(depf[1],10) - 1;
-                            var t = depf[0];
-                            var f = dupdata[p][t]["fx"];
-                            console.log(p,t,f);
-                            me.props.applyF(t,f,p,dupdata, "blue");
-                        }); 
-                        
-                    }  
-                }
-                else
-                {
-                    if(target[0] == '=' && alpha.indexOf(target[2])>-1 && alpha.indexOf(target[5])>-1 && target[1] == '(' && target[target.length -1]  == ')')
-                    {
-                        var op1i = target[3] - 1;
-                        var op2i = target[6] - 1;
-                        var op1j = alpha.indexOf(target[2]);
-                        var op2j = alpha.indexOf(target[5]);
-                        var operator = target[4];
-                        if( !(dupdata[op1i]) || !(dupdata[op2i]))
-                        {
-                            console.log("Operands are out of bounds");
-                        }
-                        else
-                        {
-                            this.props.applyF(h.h,target,i,dupdata,"blue");
-                        }
-                    }
-                    else
-                    {
-                      this.props.stringColor(h.h,i,target);  
-                    }
-                }   
-            } 
-        }  
-    }    
+    fxBlur(event){
+        this.checkBlur(this.fb.he,this.fb.row,this.fb.head,event.target.innerText);
+        event.target.innerText = "";
+    }
+
 
     saveData(){
-        var dats = this.props.data;
-        this.props.postData(dats[0]);
+        var dupdata = this.props.data;
+        this.props.postData(dupdata);
     }
 
 
@@ -255,11 +203,11 @@ class ActualData extends Component
                     <td
                         ref={function(e){if(e) e.contentEditable=true;}}
                         key={s}
-                        //ref={this.refCallback.bind(this)}
+                        id={s}
                         style = {{color:dupdata[h]['color']}}
                         className={s}
                         onFocus = {this.checkFocus.bind(this)}
-                        onBlur = {this.checkBlur.bind(this,{h},i,j)}
+                        onBlur = {this.checkBlur.bind(this,{h},i,j,"")}
                         onClick = {this.handleDoubleClick.bind(this)}
                     >{dupdata[h]['value']}</td>
                 );   
@@ -275,7 +223,7 @@ class ActualData extends Component
                 <button id="save" onClick={this.saveData.bind(this)}>SAVE</button>
                 <button id="addRow" onClick={this.addRow.bind(this)}>ADD ROW</button>
                 <button id="addCol" onClick={this.addColumn.bind(this)}>ADD COLUMN</button>
-                <table><tr><td>fxbar:</td><td contentEditable={true} ref="theInput" >{this.props.vad}</td></tr></table>
+                <table><tr><td>fxbar:</td><td contentEditable={true} id="fbar" ref={function(e){if(e != null) e.contentEditable=true;}} onBlur={this.fxBlur.bind(this)}>{this.props.vad}</td></tr></table>
                 <table>
                     <thead>{this.renderHead(this.props.data)}</thead>
                     <tbody>{this.props.data.map(this.renderData)}</tbody>
